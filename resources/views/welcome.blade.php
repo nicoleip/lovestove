@@ -53,7 +53,7 @@
         </header>
 
 
-        <div class="results">
+        <div class="results" style="padding-bottom: 0; padding-top: 0;">
             <ul class="results__list">
                 <!--
                 <li>

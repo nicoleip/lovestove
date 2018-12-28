@@ -1,3 +1,14 @@
+function renderLoader()
+{
+    const loader = '<div class="loader"><svg><use href="img/icons.svg#icon-cw"></use></svg>';
+    $('.results').prepend(loader);
+}
+
+function clearLoader()
+{
+    $('.loader').remove(); 
+}
+
 $(document).ready(function() {
 
     $('.search').on('submit', function(e){
@@ -5,6 +16,9 @@ $(document).ready(function() {
     });
     
     $('.search__btn').on('click', function() {
+        $('.results__list').html('');
+        $('.results__pages').html('');
+        renderLoader();
         var query = $('.search__field').val();
         $.ajax({
             type: 'POST',
@@ -15,7 +29,12 @@ $(document).ready(function() {
             },
             success: function(response)
             {
-               $('.results__list').append(response);
+               clearLoader();
+               $('.results__list').html('');
+               $('.results__pages').html('');
+               console.log(response);
+               $('.results__list').append(response.markup);
+               $('.results__pages').append(response.buttons)
             },
             error: function(response){
                 alert('There was an error');

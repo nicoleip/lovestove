@@ -14,7 +14,7 @@ class ApiController extends Controller
         $client = new Client();
         $result = $client->request('GET', 'https://www.food2fork.com/api/search', [
             'query' => [    
-                'key' => '3992789711285590629270c34985251f',
+                'key' => 'da4d6f3c2bcfef9a1f8804c58d6f80c6',
                 'q' => $request['query'],
             ]
         ]);
