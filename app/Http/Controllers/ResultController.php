@@ -13,7 +13,26 @@ class ResultController extends Controller
     {
         $query = $request->search;
         $client = new Client();
-        $result = $client->request('POST', 'http://lovestove.com/api/test', [
+        $result = $client->request('POST', 'http://lovestove.com/api/search', [
+            'json' => [    
+                'query' => $query,
+            ]
+        ]);
+
+        $result = json_decode($result->getBody());        
+        $data = $this->renderResults($result);
+
+        return $data;
+        
+    }
+    
+    public function getPaginatedResults(Request $request)
+    {
+        $query = $request->search;
+        $page = $request->page;
+
+        $client = new Client();
+        $result = $client->request('POST', 'http://lovestove.com/api/search', [
             'json' => [    
                 'query' => $query,
             ]
@@ -21,14 +40,15 @@ class ResultController extends Controller
 
         $result = json_decode($result->getBody());
 
-        $data = $this->renderResults($result);
+        $data = $this->renderResults($result, $page);
 
         return $data;
-        
-    }  
+    }
     
     
     public function renderRecipe($recipe) {
+        
+        
         $markup = '
         <li>
             <a class="results__link results__link--active" href="#'.$recipe->recipe_id.'">
@@ -44,6 +64,8 @@ class ResultController extends Controller
         ';
 
         return $markup;
+
+        
     }
 
     public function createPaginationButton($page, $type)
@@ -52,10 +74,10 @@ class ResultController extends Controller
         $arrow = $type === 'prev' ? 'left' : 'right' ;
         $btnMarkup = '
         <button class="btn-inline results__btn--'.$type.'" data-goto='.$pageNo.'>
+            <span>Page'.' '.$pageNo.'</span>
             <svg class="search__icon">
                 <use href="img/icons.svg#icon-triangle-'.$arrow.'"></use>
             </svg>
-            <span>Page'. $pageNo.'</span>
         </button>
         ';
 
@@ -79,7 +101,7 @@ class ResultController extends Controller
        return $button;
     }
 
-    public function renderResults($recipes, $page = 3, $resPerPage = 10) {
+    public function renderResults($recipes, $page = 1, $resPerPage = 10) {
         $markupFull = '';
         $buttons = '';
 

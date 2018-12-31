@@ -14,7 +14,7 @@ class ApiController extends Controller
         $client = new Client();
         $result = $client->request('GET', 'https://www.food2fork.com/api/search', [
             'query' => [    
-                'key' => 'da4d6f3c2bcfef9a1f8804c58d6f80c6',
+                'key' => '12a9b3fc07e627879e3c701bb4f0e878',
                 'q' => $request['query'],
             ]
         ]);
@@ -22,5 +22,24 @@ class ApiController extends Controller
         $recipes = $result->recipes;
         
         return $recipes;
+    }
+
+    public function getRecipe(Request $request)
+    {
+        $client = new Client();
+        $result = $client->request('GET', 'https://www.food2fork.com/api/get', [
+            'query' => [    
+                'key' => '12a9b3fc07e627879e3c701bb4f0e878',
+                'rId' => $request['recipeId'],
+            ]
+        ]);
+        
+
+        // $result = $result->getBody();
+        // return $result;
+        $result = json_decode($result->getBody());
+        $recipe = $result->recipe; 
+        
+        return json_encode($recipe);
     }
 }

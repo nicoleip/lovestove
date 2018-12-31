@@ -222,12 +222,12 @@
                     <span class="recipe__info-text"> servings</span>
 
                     <div class="recipe__info-buttons">
-                        <button class="btn-tiny">
+                        <button class="btn-tiny minus">
                             <svg>
                                 <use href="img/icons.svg#icon-circle-with-minus"></use>
                             </svg>
                         </button>
-                        <button class="btn-tiny">
+                        <button class="btn-tiny plus">
                             <svg>
                                 <use href="img/icons.svg#icon-circle-with-plus"></use>
                             </svg>
@@ -345,7 +345,7 @@
 
         <div class="shopping">
             <h2 class="heading-2">My Shopping List</h2>
-
+        <div class="shopping-loader"></div>
             <ul class="shopping__list">
 
                 <!--

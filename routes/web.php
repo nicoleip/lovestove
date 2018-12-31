@@ -20,3 +20,18 @@ Route::post('/getResults', [
     'uses' => 'ResultController@getResults',
     'as' => 'getResults'
 ]);
+
+Route::post('/getPaginatedResults', [
+    'uses' => 'ResultController@getPaginatedResults',
+    'as' => 'getPaginatedResults'
+]);
+
+Route::post('/getRecipe', [
+    'uses' => 'RecipeController@getRecipe',
+    'as' => 'getRecipe'
+]);
+
+Route::post('/getList', [
+    'uses' => 'ListController@getList',
+    'as' => 'getList'
+]);

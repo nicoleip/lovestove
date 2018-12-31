@@ -17,7 +17,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/test', [
+Route::post('/search', [
     'uses' => 'Api\ApiController@searchRecipes',
     'as' => 'searchRecipes'
+]);
+
+Route::post('/get', [
+    'uses' => 'Api\ApiController@getRecipe',
+    'as' => 'getRecipe'
 ]);
