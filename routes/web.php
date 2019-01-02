@@ -11,9 +11,11 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', 'HomeController@index')->name('home');
 
 
 Route::post('/getResults', [
@@ -35,3 +37,7 @@ Route::post('/getList', [
     'uses' => 'ListController@getList',
     'as' => 'getList'
 ]);
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

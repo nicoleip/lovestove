@@ -9,6 +9,11 @@ use GuzzleHttp\Client;
 
 class RecipeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     public function getRecipe(Request $request) {
         $recipeId = $request->id;
         $client = new Client();
