@@ -38,6 +38,11 @@ Route::post('/getList', [
     'as' => 'getList'
 ]);
 
+Route::post('/saveRecipe', [
+    'uses' => 'RecipeController@save',
+    'as' => 'saveRecipe'
+]);
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

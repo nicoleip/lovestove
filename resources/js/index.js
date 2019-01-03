@@ -26,48 +26,23 @@ function updateRecipe(type)
 
 function likeRecipe()
 {
-    var recipeIdHash = window.location.hash;
+    var recipeIdHash = $(recipeLink).attr('href');
     var recipe_id = recipeIdHash.replace('#', '');
-    var recipe_title = $('#recipe-title').html();
-    var recipe_source_url = $('#recipe-source-url').attr('href');
-    var recipe_img_url = $('#recipe-img').attr('src');
-    var recipe_publisher = $('#recipe-publisher').html();
-    var recipe_time = $('#recipe-time').html();
-    var recipe_servings = $('#recipe-servings').html();
-    var recipe_ingredients_obj = {}
-    var recipe_ingredients = [];
+    var recipe_title = $('span #recipe-title').html();
+    var recipe_source_url = $('a #recipe-source-url').attr('href');
+    var recipe_img_url = $('img #recipe-img').attr('src');
+    var recipe_publisher = $('span #reipe-publisher').html();
+    var recipe_time = $('span #reipe-time').html();
+    var recipe_servings = $('span #recipe-servings').html();
     $('.recipe__item').each(function(key, value){
-        recipe_ingredients_obj = {
+        var recipe_ingredients = {
             "count": $('.recipe__count').html(),
-            "unit": $('.recipe__unit').html(),
+            "unit": $('recipe__unit').html(),
             "ingredient": $('.recipe__ingredient').html()
         }
-        console.log(recipe_ingredients_obj);
-        recipe_ingredients.push(recipe_ingredients_obj);
     });
 
-    $.ajax({
-        type: 'POST',
-        url: '/saveRecipe',
-        beforeSend: function(xhr){xhr.setRequestHeader('X-CSRF-TOKEN', $('meta[name="csrf-token"]').attr('content'));},
-        data: {
-            'recipe_id': recipe_id,
-            'recipe_title': recipe_title,
-            'recipe_img_url': recipe_img_url,
-            'recipe_publisher': recipe_publisher,
-            'recipe_time': recipe_time,
-            'recipe_servings': recipe_servings,
-            'recipe_source_url': recipe_source_url,
-            'recipe_ingredients': recipe_ingredients
-        },
-        success: function(response)
-        {
-          alert('Success');
-        },
-        error: function(response){
-            alert('There was an error');
-        }
-    });
+    console.log(recipe_id, recipe_title, recipe_time, recipe_img_url, recipe_publisher, recipe_servings, recipe_source_url);
     
 }
 
@@ -171,9 +146,10 @@ $(document).ready(function() {
         }
     });
 
-    //Like Recipe
+    //Update Recipe Servings and Product Quantities
     $('body').on('click', '.recipe__details', function(e) {
         var btn = e.target.closest('.recipe__love');
+        console.log(btn);
         if(btn) {
             likeRecipe();
         }

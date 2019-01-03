@@ -24,8 +24,9 @@
     background-repeat: no-repeat;
     min-height: calc(100vh - 2 * 4vw); }
   
-  .container {
+  .container-lovestove {
     max-width: 120rem;
+    padding: 2px;
     margin: 4vw auto;
     background-color: #fff;
     border-radius: 6px;
@@ -491,3 +492,8 @@
       opacity: 1;
       visibility: visible; }
   
+.user {
+  font-size: 13px;
+  color:#F59A83;
+  margin-right: 30px;
+}

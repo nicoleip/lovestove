@@ -5,6 +5,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Session;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Auth;
+use App\User;
+use App\Recipe;
 // use App\Recipe;
 
 class RecipeController extends Controller
@@ -13,7 +16,7 @@ class RecipeController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     public function getRecipe(Request $request) {
         $recipeId = $request->id;
         $client = new Client();
@@ -39,10 +42,10 @@ class RecipeController extends Controller
         $recipe->people = $this->calculateServings();
         $recipe->time = $this->calculateTime($recipe);
         $markupStart = '
-        <figure class="recipe__fig">
-                <img src="'.$recipe->image_url.'" alt="Tomato" class="recipe__img">
+        <figure class="recipe__fig">        
+                <img src="'.$recipe->image_url.'" id="recipe-img" alt="Tomato" class="recipe__img">
                 <h1 class="recipe__title">
-                    <span>'.$recipe->title.'</span>
+                    <span id="recipe-title">'.$recipe->title.'</span>
                 </h1>
             </figure>
             <div class="recipe__details">
@@ -50,14 +53,14 @@ class RecipeController extends Controller
                     <svg class="recipe__info-icon">
                         <use href="img/icons.svg#icon-stopwatch"></use>
                     </svg>
-                    <span class="recipe__info-data recipe__info-data--minutes">'.$recipe->time.'</span>
+                    <span class="recipe__info-data recipe__info-data--minutes" id="recipe-time">'.$recipe->time.'</span>
                     <span class="recipe__info-text"> minutes</span>
                 </div>
                 <div class="recipe__info">
                     <svg class="recipe__info-icon">
                         <use href="img/icons.svg#icon-man"></use>
                     </svg>
-                    <span class="recipe__info-data recipe__info-data--people">'.$recipe->people.'</span>
+                    <span class="recipe__info-data recipe__info-data--people" id="recipe-servings">'.$recipe->people.'</span>
                     <span class="recipe__info-text"> servings</span>
 
                     <div class="recipe__info-buttons">
@@ -112,9 +115,9 @@ class RecipeController extends Controller
                 <h2 class="heading-2">How to cook it</h2>
                 <p class="recipe__directions-text">
                     This recipe was carefully designed and tested by
-                    <span class="recipe__by">'.$recipe->publisher.'</span>. Please check out directions at their website.
+                    <span class="recipe__by" id="recipe-publisher">'.$recipe->publisher.'</span>. Please check out directions at their website.
                 </p>
-                <a class="btn-small recipe__btn" href="'.$recipe->source_url.'" target="_blank">
+                <a class="btn-small recipe__btn" href="'.$recipe->source_url.'" id="recipe-source-url" target="_blank">
                     <span>Directions</span>
                     <svg class="search__icon">
                         <use href="img/icons.svg#icon-triangle-right"></use>
@@ -211,5 +214,24 @@ class RecipeController extends Controller
         $newIngredients = array_map([$this, 'mapIngredients'], $ingredients);
 
         return $newIngredients;
+    }
+
+    public function save(Request $request) {
+        
+        $recipe = new Recipe();
+        $recipe->title = $request->recipe_title;
+        $recipe->image_url = $request->recipe_img_url;
+        $recipe->time = $request->recipe_time;
+        $recipe->people = $request->recipe_servings;
+        $recipe->ingredients = json_encode($request->recipe_ingredients);
+        $recipe->publisher = $request->recipe_publisher;
+        $recipe->source_url = $request->recipe_source_url;
+        $recipe->recipe_id = $request->recipe_id;
+
+        $recipe->save();
+
+        $user = Auth::user();
+
+        $user->recipes()->attach($recipe);
     }
 }

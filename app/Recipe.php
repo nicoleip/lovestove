@@ -9,4 +9,8 @@ class Recipe extends Model
     protected $fillable = [
         'title', 'image_url' ,'time', 'people', 'ingredients', 'publisher', 'source_url', 'id'
     ];
+
+    public function users() {
+        return $this->belongsToMany('App\User');
+    }
 }
