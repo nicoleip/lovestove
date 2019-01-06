@@ -3,11 +3,15 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
+    
         <div class="col-md-8">
+        
             <div class="card">
+               
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
+                <img src="img/logo.png" alt="Logo" class="header__logo" style="height:100px; width:306px; margin-left:200px;margin-bottom:50px;">
                     <form method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
                         @csrf
 

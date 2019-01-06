@@ -8,6 +8,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
+                <img src="img/logo.png" alt="Logo" class="header__logo" style="height:100px; width:306px; margin-left:200px;margin-bottom:50px;">
                     <form method="POST" action="{{ route('register') }}" aria-label="{{ __('Register') }}">
                         @csrf
 

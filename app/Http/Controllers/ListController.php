@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Session;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\App;
 
 class ListController extends Controller
 {
@@ -12,7 +13,17 @@ class ListController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
+    public function printList(Request $request)
+    {
+        $pdf = App::make('dompdf.wrapper');
+        $html = $request->html;
+        $pdf->loadHTML($html);
+        $pdfBase64 = base64_encode($pdf->stream());
+
+        echo $pdfBase64;
+    }
+
     public function getList(Request $request)
     {
         $recipeId = $request->id;
@@ -50,6 +61,7 @@ class ListController extends Controller
                 </li>
             ';            
         }
+        
         return $markup;
     }
 

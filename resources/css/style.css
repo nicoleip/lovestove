@@ -228,7 +228,11 @@
     padding: 3rem 0; }
     .results__list,
     .likes__list {
-      list-style: none; }
+      list-style: none;
+    overflow-x:visible;
+    overflow-y:scroll;
+    height: 400px;
+    }
     .results__link:link, .results__link:visited,
     .likes__link:link,
     .likes__link:visited {

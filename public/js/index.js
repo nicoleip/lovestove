@@ -133,6 +133,38 @@ $(document).ready(function() {
         }
     });
 
+
+    // Download Shopping List
+    $('body').on('click', '#print-btn', function(e) {
+        var html = '<p>My shopping list</p><ul>';
+        $('.shopping__description').each(function() {
+            html += ('<li>');
+            html += $(this).html();
+            html += ('</li>');
+        });
+        html += ('</ul>');
+        console.log(html);
+        $.ajax({
+            type: 'POST',
+            url: '/printList',
+            beforeSend: function(xhr){xhr.setRequestHeader('X-CSRF-TOKEN', $('meta[name="csrf-token"]').attr('content'));},
+            data: {
+                'html': html
+            },
+            success: function(response)
+            {
+                var a = document.createElement('a');
+                a.href= "data:application/pdf;base64,"+response;
+                a.target = '_blank';
+                a.download = 'my_shopping_list.pdf';
+                a.click();
+            },
+            error: function(response){
+                alert('There was an error');
+            }
+        });        
+    })
+
     //Populate the recipe area with AJAX
     $('.results__list').on('click', function(e) {
         var recipeLink = e.target.closest('.results__link');
@@ -179,35 +211,7 @@ $(document).ready(function() {
         }
     });
 
-    //Populate the recipe area with AJAX
-    // $('.results__list').on('click', function(e) {
-    //     var recipeLink = e.target.closest('.results__link');
-    //     if(recipeLink) {
-    //         var recipeIdHash = window.location.hash;
-    //         var recipeId = recipeIdHash.replace('#', '');
-    //         $('.recipe').html('');
-    //         renderLoader('.recipe');
-    //         $.ajax({
-    //             type: 'POST',
-    //             url: '/getRecipe',
-    //             beforeSend: function(xhr){xhr.setRequestHeader('X-CSRF-TOKEN', $('meta[name="csrf-token"]').attr('content'));},
-    //             data: {
-    //                 'id': recipeId,
-    //             },
-    //             success: function(response)
-    //             {
-    //                 clearLoader();
-    //                 $('.recipe').html('');
-    //                 $('.recipe').append(response);
-    //             }
-    //             ,
-    //             error: function(response){
-    //                 alert('There was an error');
-    //             }
-    //         });        
-    //     }
-    // });
-
+    //Populate Shopping List Area
     $('body').on('click', '.recipe__btn', function(e) {
         var btn = e.target.closest('.recipe__btn');
         if(btn) {
@@ -226,7 +230,9 @@ $(document).ready(function() {
                 {
                     clearLoader();
                     $('.shopping__list').html('');
+                    $('.save-list').html('');
                     $('.shopping__list').append(response);
+                    $('.save-list').append('<button id="print-btn" class="btn-small recipe__btn">Save shopping list</button>');
                 }
                 ,
                 error: function(response){
@@ -237,4 +243,27 @@ $(document).ready(function() {
 
         }
     });
+
+    // Get Saved Recipes
+    $('.likes__field').hover(function(e) {
+        console.log('hovers');
+            $.ajax({
+                type: 'GET',
+                url: '/getSavedRecipes',
+                beforeSend: function(xhr){xhr.setRequestHeader('X-CSRF-TOKEN', $('meta[name="csrf-token"]').attr('content'));},
+                success: function(response)
+                {
+                    $('.likes__list').html('');
+                    $('.likes__list').append(response);
+                }
+                ,
+                error: function(response){
+                    alert('There was an error');
+                }
+            });        
+             
+
+        
+    });
+
 });

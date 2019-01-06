@@ -43,6 +43,16 @@ Route::post('/saveRecipe', [
     'as' => 'saveRecipe'
 ]);
 
+Route::get('/getSavedRecipes', [
+    'uses' => 'RecipeController@getSavedRecipes',
+    'as' => 'getSavedRecipes'
+]);
+
+Route::post('/printList', [
+    'uses' => 'ListController@printList',
+    'as' => 'printList'
+]);
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

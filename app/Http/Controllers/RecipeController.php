@@ -234,4 +234,35 @@ class RecipeController extends Controller
 
         $user->recipes()->attach($recipe);
     }
+
+    public function getSavedRecipes(Request $request)
+    {
+        $markup = '';
+        $user = Auth::user();
+        $recipes = json_decode($user->recipes);
+
+        if(!$recipes)
+        {
+            $markup = 'No saved recipes yet!';
+        } else {
+            foreach($recipes as $recipe) {
+
+        $markup .='<li>
+                <a class="likes__link" href=#"'.$recipe->recipe_id.'">
+                    <figure class="likes__fig">
+                        <img src="'.$recipe->image_url.'"alt="Test">
+                    </figure>
+                    <div class="likes__data">
+                        <h4 class="likes__name">'.$recipe->title.'</h4>
+                        <p class="likes__author">'.$recipe->publisher.'</p>
+                    </div>
+                </a>
+        </li>';       
+            }
+
+            return $markup;
+        }
+        
+        return $markup;
+    }
 }
